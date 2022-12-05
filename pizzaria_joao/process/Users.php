@@ -14,7 +14,7 @@ $metodo = $_SERVER["REQUEST_METHOD"];
 if($metodo==="POST"){
 
 if($type==="login"){
-    $query = $conn->query("SELECT * FROM pizzaria.user WHERE email = '$email' AND senha  = md5($password)");
+    $query = $conn->query("SELECT * FROM user WHERE email = '$email' AND senha  = md5($password)");
     if($query->rowCount()>0){
         $_SESSION['cliente'] = "ok";
         foreach($query as $dados){
@@ -23,7 +23,7 @@ if($type==="login"){
         }
         header('Location:../public/home.php');
     }else{
-        $query = $conn->query("SELECT * FROM pizzaria.administrador WHERE email = '".$email."' AND senha  = '".$password."'");
+        $query = $conn->query("SELECT * FROM administrador WHERE email = '".$email."' AND senha  = '".$password."'");
         if($query->rowCount()>0){
             $dados = $query->fetchAll(PDO::FETCH_COLUMN, 0);
             $_SESSION['administrador']=$dados;
@@ -38,7 +38,7 @@ if($type==="login"){
     }
 }
 else if($type==="cadastro_cliente"){
-    $query = $conn->query("SELECT * FROM pizzaria.user WHERE email = '".$email."'");
+    $query = $conn->query("SELECT * FROM user WHERE email = '".$email."'");
     if($query->rowCount()<=0){
         $query = $conn->query("INSERT INTO pizzaria.user (email, senha, permissao) VALUES ('$email', md5($password), 0)");
         //retorna para o login com mensagem de cadastro com sucesso
